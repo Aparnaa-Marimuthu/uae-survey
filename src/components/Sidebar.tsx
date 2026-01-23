@@ -1,6 +1,6 @@
 export type SidebarItem =
   | "Full_App"
-  | "Answers"
+  | "Spotter"
   | "liveboards";
 
 type Props = {
@@ -14,7 +14,7 @@ const Sidebar = ({ activeItem, onSelect }: Props) => {
 
       <nav className="nav">
         <NavItem label="Full App" active={activeItem === "Full_App"} onClick={() => onSelect("Full_App")} />
-        <NavItem label="Answers" active={activeItem === "Answers"} onClick={() => onSelect("Answers")} />
+        <NavItem label="Spotter" active={activeItem === "Spotter"} onClick={() => onSelect("Spotter")} />
         <NavItem label="Liveboards" active={activeItem === "liveboards"} onClick={() => onSelect("liveboards")} />
       </nav>
 

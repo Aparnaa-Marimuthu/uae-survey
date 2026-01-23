@@ -1,29 +1,45 @@
-import { useEffect, useState } from "react";
-import { fetchCurrentUser } from "../api/ThoughtspotUser";
+import { useState } from "react";
 
 const Header = () => {
   const [open, setOpen] = useState(false);
-  const [username, setUsername] = useState<string>("");
 
-  useEffect(() => {
-    fetchCurrentUser()
-      .then(user => {
-        setUsername(user.displayName || user.name);
-      })
-      .catch(() => {
-        setUsername("");
-      });
-  }, []);
+  const username = localStorage.getItem("username") || "User";
+  const email = localStorage.getItem("username") || "";
 
-  const handleLogout = () => {
-    // Soft logout (demo-safe)
-    const iframe = document.querySelector(
-      ".iframe-wrapper iframe"
-    ) as HTMLIFrameElement;
+  const formatName = (email: string) => {
+    if (!email.includes("@")) return email;
 
-    if (iframe) {
-      iframe.src = `${import.meta.env.VITE_TS_HOST}/login`;
+    const namePart = email.split("@")[0];
+    const parts = namePart.split(".");   
+
+    return parts
+      .map(
+        p => p.charAt(0).toUpperCase() + p.slice(1)
+      )
+      .join(" ");
+  };
+
+  const displayName = formatName(email);
+
+  const handleLogout = async () => {
+    // Optional: notify backend
+    try {
+      await fetch(
+        `${import.meta.env.VITE_BACKEND_URL}/auth/logout`,
+        {
+          method: "POST",
+          credentials: "include",
+        }
+      );
+    } catch {
+      // ignore
     }
+
+    // Clear app session
+    localStorage.removeItem("username");
+    localStorage.removeItem("password");
+
+    window.location.href = "/";
   };
 
   return (
@@ -43,11 +59,10 @@ const Header = () => {
           onClick={() => setOpen(!open)}
         >
           <div className="user-avatar">
-            {username ? username[0].toUpperCase() : "?"}
+            {username[0].toUpperCase()}
           </div>
-          <span className="user-name">
-            {username || "User"}
-          </span>
+
+          <span className="user-name">{displayName}</span>
 
           {open && (
             <div className="dropdown">
