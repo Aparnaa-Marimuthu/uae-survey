@@ -46,6 +46,7 @@ const LoginPage = () => {
 
       // Store username for SDK
       localStorage.setItem("username", normalizedEmail);
+      sessionStorage.setItem("tempPassword", password);
 
       // Redirect to dashboard
       window.location.href = "/";
