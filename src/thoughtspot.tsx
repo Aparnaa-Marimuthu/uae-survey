@@ -17,7 +17,7 @@ export const initThoughtSpot = () => {
       }
 
       try {
-        const res = await fetch(`${import.meta.env.VITE_BACKEND_URL}/auth/login`, {
+        const res = await fetch(`${import.meta.env.VITE_BACKEND_URL}/api/auth/login`, {
           method: "POST",
           headers: { "Content-Type": "application/json" },
           body: JSON.stringify({ username, password }),
