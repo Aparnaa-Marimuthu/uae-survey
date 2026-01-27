@@ -29,7 +29,7 @@ const LoginPage = () => {
 
     setLoading(true);
     try {
-      const res = await fetch(`${import.meta.env.VITE_BACKEND_URL}/api/auth/login`, {
+      const res = await fetch(`${import.meta.env.VITE_BACKEND_URL}/auth/login`, {
         method: "POST",
         headers: { "Content-Type": "application/json" },
         body: JSON.stringify({
@@ -39,16 +39,21 @@ const LoginPage = () => {
       });
 
       if (!res.ok) {
-        const data = await res.json();
+        const text = await res.text();
+        const data = text ? JSON.parse(text) : {};
         throw new Error(data.error || "Login failed");
       }
 
-      // Store username for SDK
+      const text = await res.text();
+      const data = text ? JSON.parse(text) : {};
+
+      // SAVE TOKEN HERE (ONLY PLACE)
+      localStorage.setItem("tsAuthToken", data.authToken);
       localStorage.setItem("username", normalizedEmail);
-      sessionStorage.setItem("tempPassword", password);
 
       // Redirect to dashboard
       window.location.href = "/";
+
     } catch (err: unknown) {
       const message = err instanceof Error ? err.message : "Login failed";
       setError(message);
