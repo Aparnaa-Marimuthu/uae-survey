@@ -28,7 +28,6 @@ const Header = () => {
         `${import.meta.env.VITE_BACKEND_URL}/auth/logout`,
         {
           method: "POST",
-          credentials: "include",
         }
       );
     } catch {

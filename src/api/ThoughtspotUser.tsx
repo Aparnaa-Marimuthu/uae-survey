@@ -7,7 +7,6 @@ export const fetchCurrentUser = async (): Promise<TSUser> => {
   const res = await fetch(
     `${import.meta.env.VITE_TS_HOST}/callosum/v1/session/info`,
     {
-      credentials: "include",
     }
   );
 
